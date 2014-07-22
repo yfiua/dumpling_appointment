@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link href='style.css' rel='stylesheet' />
+<link href='./fullcalendar/fullcalendar.css' rel='stylesheet' />
+<link href='./fullcalendar/fullcalendar.print.css' rel='stylesheet' media='print' />
+<link href="./datetime_picker/jquery.simple-dtpicker.css" rel="stylesheet" type="text/css"/>
+
+<script src='./jquery/jquery-1.9.1.min.js'></script>
+<script src='./jquery/jquery-ui-1.10.2.custom.min.js'></script>
+<script src='./fullcalendar/fullcalendar.min.js'></script>
+<script src="./datetime_picker/jquery.simple-dtpicker.js"></script>
+
+<title>Dumpling Appointment System - <%=session.getAttribute("username")%></title>
+</head>
+
+<script language="javascript">
+	function createXmlRequest() {
+		var xmlHttp = null;
+		if (window.XMLHttpRequest) {
+			xmlHttp = new XMLHttpRequest();
+		} else if (window.ActiveXObject) {
+			try {
+				xmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
+			} catch (e) {
+				try {
+					xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+				} catch (failed) {
+					xmlHttp = false;
+				}
+			}
+		}
+		return xmlHttp;
+	}
+
+	function getAppointments() {
+		var request = createXmlRequest();
+		if (!request) {
+			//document.getElementById("show").innerHTML="The browser does not support javascript.";
+		} else {
+			var content = "email=<%=session.getAttribute("email")%>&action=view";
+			request.open("post", "cookDumpling", false);
+			request.onreadystatechange = function() {
+				if (request.readyState == 4) {
+					document.getElementById("show").innerHTML = "Loading...";
+					if (request.status == 200) {
+						document.getElementById("show").innerHTML = "";
+						var json = request.responseText;
+						var jsonObj = JSON.parse(json);
+						window.appointments = jsonObj.appointments;
+						for (var i = 0; i < window.appointments.length; i++) {
+							var startUTC = window.appointments[i].start;
+							var endUTC = window.appointments[i].end;
+							var start = new Date(0);
+							var end = new Date(0);
+							start.setUTCMilliseconds(startUTC);
+							end.setUTCMilliseconds(endUTC);
+
+							window.events[i] = new Object();
+							window.events[i].number = i;
+							window.events[i].title = window.appointments[i].title;
+							window.events[i].start = start;
+							window.events[i].end = end;
+							window.events[i].allDay = false;
+						}			
+					}
+				}
+			}
+			request.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+			request.send(content);
+		}
+	}
+
+	function getUsers() {
+		var request = createXmlRequest();
+		if (!request) {
+			//document.getElementById("show").innerHTML="The browser does not support javascript.";
+		} else {
+			var content = "email=<%=session.getAttribute("email")%>&action=users";
+			request.open("post", "cookDumpling", false);
+			request.onreadystatechange = function() {
+				if (request.readyState == 4) {
+					document.getElementById("users").innerHTML = "loading...";
+					if (request.status == 200) {
+						document.getElementById("users").innerHTML = "";
+						var json = request.responseText;
+						var jsonObj = JSON.parse(json);
+						window.users = jsonObj.users;
+						for (var i = 0; i < window.users.length; i++) {
+							if (window.users[i].email != "<%=session.getAttribute("email")%>") {
+								html = "<input class='involvers' id='involvers' type='checkbox' name='involvers' value='" + window.users[i].id + "' />" + window.users[i].name + "<br/>";
+								document.getElementById("users").innerHTML += html;
+							}
+						}
+					}
+				}
+			}
+			request.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+			request.send(content);
+		}
+	}
+
+	function typeChanged() {
+		if (document.getElementById('type').value === "FREE") {
+			$("input.involvers").attr("disabled", true);
+			$("input.involvers").prop("checked", false);
+		  } else {
+		    $("input.involvers").removeAttr("disabled");
+		  }
+	}
+	
+	function showDetail(i) {
+		var appointment = window.appointments[i];
+		document.getElementById("detail").innerHTML = appointment.start;
+		document.getElementById("detail").innerHTML += appointment.end;
+	}
+
+	function checkAppointment() {
+		$.ajax({
+		    type: "POST",
+		    url: "cookDumpling?action=check",
+		    data: $('#new_appointment').serialize(),
+		    dataType: "json",
+		    success: function (request) {
+		    	if (request.ok == 1) {
+		    		var r = confirm("This appointment is OK! Are you sure to add it?");
+		    		if (r == true) {
+			    		addAppointment();
+			    	}
+			    } else {
+				    alert("There are conflicts.");
+				}
+			},
+		    error: function (request, error){
+		        alert('Error checking appointment, try again later.');
+			}
+		});
+	}
+
+	function addAppointment() {
+		$.ajax({
+		    type: "POST",
+		    url: "cookDumpling?action=add",
+		    data: $('#new_appointment').serialize(),
+		    dataType: "json",
+		    success: function (request) {
+		    	if (request.success == 1) {
+		    		alert("Adding appointment successfully!");
+			    } else {
+				    alert("Error adding appointment, try again.");
+				}
+				
+		    	getAppointments();
+				reloadCalendar();
+			},
+		    error: function (request, error){
+		        alert('Error adding appointment, try again later.');
+			}
+		});
+	}
+	var appointments;
+	var events = new Array();
+	var users;
+
+	// Calendar
+	function reloadCalendar() {
+		document.getElementById("calendar").innerHTML = "";
+		
+		var date = new Date();
+		var d = date.getDate();
+		var m = date.getMonth();
+		var y = date.getFullYear();
+		
+		var calendar = $('#calendar').fullCalendar({
+			header: {
+				left: 'prev,next today',
+				center: 'title',
+				right: 'month,agendaWeek,agendaDay'
+			},
+			eventClick: function(event) {
+				showDetail(event.number);
+				return false;
+			},
+			selectable: true,
+			selectHelper: true,
+			select: function(start, end, allDay) {
+				var title = prompt('Event Title:');
+				if (title) {
+					calendar.fullCalendar('renderEvent',
+						{
+							title: title,
+							start: start,
+							end: end,
+							allDay: allDay
+						},
+						true // make the event "stick"
+					);
+				}
+				calendar.fullCalendar('unselect');
+			},
+			editable: false,
+			events: window.events
+		});	
+	}
+</script>
+<style>
+	body {
+		margin-top: 0px;
+		text-align: center;
+		font-size: 14px;
+		font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+		}
+
+	#calendar {
+		width: 900px;
+		margin: 0 auto;
+		}
+</style>
+<body>
+	<div class="header">
+            <div class="header_user"><%=session.getAttribute("username")%>'s Appointments</div>
+            <div class="header_function"><input type=button onclick="javascript:window.location.href='logout.jsp';" value="Logout"></div>
+    </div>
+	<div id='calendar'></div>
+	<div id="show">asd</div>
+	<div id="detail">detail</div>
+	<form id="new_appointment" name="new_appointment" action="whatever">
+		<input type="hidden" name="email" value='<%=session.getAttribute("email")%>' />	
+		Title:<input id="title" name="title" value="Title" /><br/>
+		Start Date and Time:
+		<input type="text" id="start_time" name="start_time" value="" readonly />
+		End Date and Time:
+		<input type="text" id="end_time" name="end_time" value="" readonly />
+		<div id="users">users</div>
+		<select id="type" name="type" onchange="javascript:typeChanged();">
+		  <option value="BLOCKED">Blocked</option>
+		  <option value="FREE">Free</option>
+		  <option value="PONTETIALLY_BLOCKED">Potentially Blocked</option>
+		  <option value="AWAY">Away</option>
+		</select>
+		Notes:<input id="notes" name="notes" value="Input Notes Here" /><br/>
+		<input type="checkbox" name="is_private" value="1" />It is a private event.<br/>
+		<a href="#" onclick="javascript:checkAppointment();return false;">Add</a>
+	</form>
+	<script type="text/javascript">
+		$(function(){
+			$('*[name=start_time]').appendDtpicker({
+				"inline": true,
+				"dateFormat": "DD/MM/YYYY hh:mm",
+				//"current": "21/06/2013 19:00" 
+			});
+		});
+		$(function(){
+			$('*[name=end_time]').appendDtpicker({
+				"inline": true,
+				"dateFormat": "DD/MM/YYYY hh:mm",
+				//"current": "21/06/2013 21:00" 
+			});
+		});
+	</script>
+	<script type="text/javascript">
+		getAppointments();
+		reloadCalendar();
+		getUsers();
+	</script>
+</body>
+</html>

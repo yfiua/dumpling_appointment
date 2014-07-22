@@ -1,0 +1,47 @@
+
+function calendar_pre()
+{
+
+    document.write('<table class="cal_body" cellpadding="0" cellspacing="0" border="0" ><tr class="cal_week"><td>S</td><td>M</td><td>T</td><td>W</td><td>T</td><td>F</td><td>S</td></tr><tr>');
+    
+    week = 0;
+
+        for(i=1;i<=beg_j;i++)
+        {
+                document.write('<td class="cal_date_n">'+(days_in_month[month-1]-beg_j+i)+'</td>');
+                week++;
+        }
+        for(i=1;i<=total;i++)
+        {
+                if(week==0)
+                {
+                        document.write('<tr>');
+                        document.write('<td class="cal_date">'+i+'</td>');
+                }
+                if(week!=0)
+                {
+                        document.write('<td class="cal_date">'+i+'</td>');
+                }
+                week++;
+
+                if(week==7)
+                {
+                        document.write('</tr>');
+                        week=0;
+                }
+        }
+        for(i=1;week!=0;i++)
+        {
+                document.write('<td class="cal_date_n">'+i+'</td>');
+                week++;
+                if(week==7)
+                {
+                        document.write('</tr>');
+                        week=0;
+                }
+        }
+        document.write('</table>');
+        return true;
+
+
+}

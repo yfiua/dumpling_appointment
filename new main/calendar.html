@@ -1,0 +1,189 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Calendar</title>
+        <style type="text/css"></style>
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+        <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+        <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+        <script src="fullcalendar/timer.js"></script>
+        <link href='fullcalendar/fullcalendar.css' rel='stylesheet' />
+        <link href='fullcalendar/fullcalendar.print.css' rel='stylesheet' media='print' />
+        <script src='fullcalendar/fullcalendar.min.js'></script>
+        <link href="/flat/blue.css" rel="stylesheet">
+        <script src='fullcalendar/jquery.icheck.js'></script>
+        <link rel="stylesheet" href="style_cal.css">
+        <script>
+         $(function() {
+            $( "#datepicker_from" ).datetimepicker();
+         });
+         
+           $(function() {
+            $( "#datepicker_to" ).datetimepicker();
+         });   
+
+        $(function() {
+            $( "#dialog" ).dialog();
+        });
+
+
+        </script>
+     
+
+
+
+
+        <script>
+
+    $(document).ready(function() {
+    
+        var date = new Date();
+        var d = date.getDate();
+        var m = date.getMonth();
+        var y = date.getFullYear();
+        
+        $('#calendar').fullCalendar({
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,basicWeek,basicDay'
+            },
+            editable: true,
+            events: [
+                {
+                    title: 'All Day Event',
+                    start: new Date(y, m, 1)
+                },
+                {
+                    title: 'Long Event',
+                    start: new Date(y, m, d-5),
+                    end: new Date(y, m, d-2)
+                },
+                {
+                    id: 999,
+                    title: 'Repeating Event',
+                    start: new Date(y, m, d-3, 16, 0),
+                    allDay: false
+                },
+                {
+                    id: 999,
+                    title: 'Repeating Event',
+                    start: new Date(y, m, d+4, 16, 0),
+                    allDay: false
+                },
+                {
+                    title: 'Meeting',
+                    start: new Date(y, m, d, 10, 30),
+                    allDay: false
+                },
+                {
+                    title: 'Lunch',
+                    start: new Date(y, m, d, 12, 0),
+                    end: new Date(y, m, d, 14, 0),
+                    allDay: false
+                },
+                {
+                    title: 'Birthday Party',
+                    start: new Date(y, m, d+1, 19, 0),
+                    end: new Date(y, m, d+1, 22, 30),
+                    allDay: false
+                },
+                {
+                    title: 'Click for Google',
+                    start: new Date(y, m, 28),
+                    end: new Date(y, m, 29),
+                    url: 'http://google.com/'
+                }
+            ]
+        });
+        
+    });
+
+</script>
+
+    </head>
+    <body>
+        <div class="header">
+
+            <div class="header_user">Appointment</div>
+            <div class="header_function">Logout</div>
+        </div>
+    	<div id="warp">
+    	
+    		
+    		<div class="left">
+                <div class="addevent">
+                    <input type="text" name="email" size="25" class="add_new" placeholder="Add new event">
+                    <input type="text" name="date" size="25" class="add_time_from" id="datepicker_from" placeholder="From..">
+                    <a class="add_time_sp"> ~ </a>
+                    <input type="text" name="date" size="25" class="add_time_to" id="datepicker_to" placeholder="To..">
+                </div>
+                <div class="addevent">
+                    <a class="add_type">Appointment Type</a>
+                    <select>
+
+                            <option selected>Blocked</option>
+                            <option>Free</option>
+                            <option>Away</option>
+                            <option class="type_busy">Busy</option>
+                    </select>
+                </div>
+
+                 <a class="add_label">With..</a>
+                <div class="addevent" style="position:relative; height:160px; overflow:auto">
+
+                    <input class="regular-checkbox" type="checkbox" name="involvers" value="1"> <a Class="add_label">Pera</a><br>
+                    <input class="regular-checkbox" type="checkbox" name="involvers" value="1"> <a Class="add_label">Private</a><br>
+                    <input class="regular-checkbox" type="checkbox" name="involvers" value="1"> <a Class="add_label">Private</a><br>
+                    <input class="regular-checkbox" type="checkbox" name="involvers" value="1"> <a Class="add_label">Private</a><br>
+                        
+
+                        
+                </div>
+
+                <div class="addevent">
+                    <textarea class="note" name="comments" cols="25" rows="5" placeholder="Note"></textarea>
+                </div>
+
+                 <div class="addevent" style="background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#999), to(#888));
+background-image: -webkit-linear-gradient(#999, #888);
+background-image: -moz-linear-gradient(#999, #888);
+background-image: -o-linear-gradient(#999, #888);
+background-image: linear-gradient(#999, #888);" >
+                    <input class="regular-checkbox" type="checkbox" name="involvers" value="1"> <a Class="add_label" style="color:#fff">Private</a><br>
+                        
+                        
+                </div>
+
+
+
+                <div class="add_button">
+                    <input type="submit" value="Add" class="add_add">
+                </div>
+                
+                
+
+    		</div>
+
+            <div class="right">
+            
+                 <div id='calendar'></div>
+            
+            </div>
+
+    <div  id="dialog" title="Basic dialog">
+    <p>
+        fkjfjfjfjfjfjfj
+    </p>
+    </div>
+
+    	</div>
+        <div class="footer">
+            copyleft = Frehiwo, Marta, Junyu, Sun
+        </div>å
+
+
+
+    </body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Calendar</title>
+        <style type="text/css"></style>
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+        <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+        <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+        <link rel="stylesheet" href="style_cal.css">
+        <script type="text/javascript" src="cal.js"></script>
+        <script>
+         $(function() {
+            $( "#datepicker" ).datepicker();
+         });
+         
+        </script>
+
+    </head>
+    <body>
+        <div class="header">
+
+            <div class="header_user">Appointment</div>
+            <div class="header_function">Logout</div>
+        </div>
+    	<div id="warp">
+    	
+    		<div class="left">
+    			<div class="today">
+                    <div class="today_s">Today</div>
+                    <div class="today_num">10</div>
+                    <div class="today_date">June, 2013</div>
+                </div>
+    			<div class="cal">
+                    <div class="cal_header">
+                            <span class="cal_left" onClick="javascript:cal_pre();"> < </span>
+                            <span class="cal_mid"> June </span>
+                            <span class="cal_right"> > </span>
+                    </div>
+
+                    
+                    <div id="cal"></div>
+
+                    <script>
+                          document.getElementById("cal") = calendar();
+                    </script>
+
+                    
+
+                </div>
+    		</div>
+    		<div class="right">
+                <div class="addevent">
+                    <input type="text" name="email" size="25" class="add_new" placeholder="Add new event">
+                    <input type="text" name="date" size="25" class="add_time" id="datepicker" placeholder="Set Time">
+                    <select class="add_person">
+                            <option selected>With...</option>
+                            <option>Sun</option>
+                            <option>Pu</option>
+                            <option>Maya</option>
+                            <option>Freh</option>
+                    </select>
+                    <input type="submit" value="Add" class="add_button">
+                    <input type="submit" value="Check" class="add_button">
+                </div>
+
+    			<div class="event">
+                    <div class="event_l">
+                        <div class="event_time">9:00~10:00</div>
+                        <div class="event_detail">Meeting at E023</div>
+                        <div class="event_with">With Maya</div>
+                    </div>
+                    <div class="event_r">
+                        <div class="event_date_n">08</div>
+                        <div class="event_date_a">August</div>
+                    </div>
+                </div>
+                <div class="event">
+                    <div class="event_l">
+                        <div class="event_time">9:00~10:00</div>
+                        <div class="event_detail">Eating food with someone else</div>
+                        <div class="event_with">With Maya, Junyu</div>
+                    </div>
+                    <div class="event_r">
+                        <div class="event_date_n">04</div>
+                        <div class="event_date_a">August</div>
+                    </div>
+                </div>
+                <div class="event">
+                    <div class="event_l">
+                        <div class="event_time">19:00~22:00</div>
+                        <div class="event_detail">Meeting at E023, have exam in the big room, apple release the new ios </div>
+                        <div class="event_with">With Maya</div>
+                    </div>
+                    <div class="event_r">
+                        <div class="event_date_n">18</div>
+                        <div class="event_date_a">June</div>
+                    </div>
+                </div>
+                
+
+    		</div>
+    	</div>
+        <div class="footer">
+            copyleft = Frehiwo, Marta, Junyu, Sun
+        </div>
+
+
+
+    </body>
+</html>

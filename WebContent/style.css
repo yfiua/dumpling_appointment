@@ -1,0 +1,142 @@
+
+body {
+	font-size:12px;
+	background: #FFEFE7;
+	margin: 0;
+	padding: 0;
+	font-family: Sans-Serif;
+}
+
+
+h1{
+	font-size: 45px;
+	line-height: 40px;
+}
+
+h2{
+	font-size: 24px;
+	line-height: 24px;
+	color: #666;
+}
+a:link{
+	color: red;
+}
+a:visited{
+	color:black;
+}
+
+#warp{
+	width: 960px;
+	margin: 0 auto;
+}
+#title{
+	margin:auto;
+	width: 320px;
+	clear:both;
+	padding-top: 40px;
+	font-size: 30px;
+
+}
+#main{
+	border-radius:5px;
+	border:1px solid #C7BAB4;
+	/*box-shadow: 0 0 3px #5C5653;*/
+	margin: auto;
+	width: 320px;
+	/*height: 200px;*/
+	clear: both;
+	background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#DDD));
+}
+.header{
+	height: 40px;
+	width: 100%;
+	background: linear-gradient(to bottom, #000000 0%,#000039 84%); /* W3C */
+	border-bottom: 1px solid #000069;
+
+}
+.header_user{
+	font-size: 18px;
+	padding: 10px;
+	color: #fff;
+	float: left;
+	margin-left: 40px;
+
+}
+.header_function{
+	float: right;
+	color: #eee;
+	font-size: 15px;
+	line-height: 15px;
+	padding: 10px;
+	margin: 2px 40px 0 0;
+}
+.s_input{
+	width: 280px;
+	height: 30px;
+	line-height: 20px;
+	font-size: 16px;
+	border-radius: 3px;
+	border: 1px solid #CCC;
+	margin-left: 18px;
+	margin-top:10px;
+}
+.login_button{
+	width: 280px;
+	height: 40px;
+	line-height: 20px;
+	font-size: 20px;
+	display: inline-block;
+	outline: none;
+	background: -webkit-gradient(linear, left top, left bottom, from(#5B74DB), to(#374685));
+	text-align: center;
+	text-decoration: none;
+	border-radius: 3px;
+	border: 0;
+	color: #fff;
+	margin-left: 18px;
+	margin-top:8px;
+}
+.new_account{
+	color: #F76A09;
+	float: right;
+	text-align: right;
+	margin-right: 8px;
+	margin-top:8px;
+}
+
+
+.signup_button{
+	width: 162px;
+	height: 40px;
+	line-height: 20px;
+	font-size: 20px;
+	display: inline-block;
+	outline: none;
+	background: -webkit-gradient(linear, left top, left bottom, from(#5B74DB), to(#374685));
+	text-align: center;
+	text-decoration: none;
+	border-radius: 3px;
+	border: 0;
+	color: #fff;
+	margin-left: 18px;
+	margin-top:8px;
+	margin-bottom: 10px;
+}
+
+.reset_button{
+	width: 100px;
+	height: 40px;
+	line-height: 20px;
+	font-size: 20px;
+	display: inline-block;
+	outline: none;
+	background: -webkit-gradient(linear, left top, left bottom, from(#888), to(#999));
+	text-align: center;
+	text-decoration: none;
+	border-radius: 3px;
+	border: 0;
+	color: #fff;
+	margin-left: 18px;
+	margin-top:8px;
+	margin-bottom: 10px;
+}
